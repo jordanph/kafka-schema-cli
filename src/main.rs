@@ -14,6 +14,7 @@ async fn main() {
   };
 
   println!("🕵️ Validating schema files before migrating...");
+  println!("----------------------------------------------");
 
   for entry in WalkDir::new("./schemas")
   .follow_links(true)
@@ -66,9 +67,13 @@ async fn main() {
     }
   }
 
+  println!("----------------------------------------------");
+
   if any_errors {
+    println!("🙅‍♂️ One or more schemas failed validation...");
     std::process::exit(1)
   } else {
+    println!("🙆‍♂️ All schemas passed validation!");
     std::process::exit(0)
   }
 }
