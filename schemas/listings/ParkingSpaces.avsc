@@ -1,0 +1,27 @@
+{
+  "namespace": "listings",
+  "type": "record",
+  "name": "ParkingSpaces",
+  "fields": [
+    {
+      "name": "total",
+      "type": ["null", "int"],
+      "doc": "Number of total parking spaces available"
+    },
+    {
+      "name": "numOpenSpaces",
+      "type": ["null", "int"],
+      "doc": "Number of open spaces available for parking"
+    },
+    {
+      "name": "numGarageSpaces",
+      "type": ["null", "int"],
+      "doc": "Number of garage spaces available"
+    },
+    {
+      "name": "numCarportSpaces",
+      "type": ["null", "int"],
+      "doc": "Number of carports available"
+    }
+  ]
+}

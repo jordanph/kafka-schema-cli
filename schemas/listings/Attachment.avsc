@@ -1,0 +1,75 @@
+{
+  "namespace": "listings",
+  "type": "record",
+  "name": "Attachment",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "doc": "Unique ID for the attachment"
+    },
+    {
+      "name": "sha",
+      "type": "string",
+      "doc": "Unique sha ID for the attachment"
+    },
+    {
+      "name": "type",
+      "type": [
+        "null",
+        {
+            "type": "enum",
+            "name": "Attachment_type",
+            "symbols": [
+              "image",
+              "medium_logo",
+              "large_logo",
+              "document_preview",
+              "document",
+              "statement_of_information",
+              "ad",
+              "banner",
+              "floorplan",
+              "frontpage_image"
+            ]
+         }
+      ],
+      "doc": "Type of attachment"
+    },
+    {
+      "name": "caption",
+      "type": ["null", "string"],
+      "doc": "Caption provided for an attachment"
+    },
+    {
+      "name": "extension",
+      "type": {
+        "type": "enum",
+        "name": "Attachment_extension",
+        "symbols": [
+          "jpg",
+          "gif",
+          "png",
+          "pdf",
+          "pcx",
+          "svg",
+          "webp",
+          "ppm",
+          "tiff",
+          "bmp"
+        ]
+      },
+      "doc": "Extension for the attachment file type"
+    },
+    {
+      "name": "orderIndex",
+      "type": "int",
+      "doc": "Determines the order of display when displaying all attachments for the listing"
+    },
+    {
+      "name": "templatedUrl",
+      "type": ["null", "string"],
+      "doc": "A templated url to allow for simple construction of REA's public attachments server URL. `{size}` must be provided eg. `original` (documents and images) or `800x600` (images only)."
+    }
+  ]
+}

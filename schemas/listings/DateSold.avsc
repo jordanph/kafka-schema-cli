@@ -1,0 +1,17 @@
+{
+  "namespace": "listings",
+  "type": "record",
+  "name": "DateSold",
+  "fields": [
+    {
+      "name": "date",
+      "type": ["null", "string"],
+      "doc": "Date the listing was sold"
+    },
+    {
+      "name": "display",
+      "type": ["null", "string"],
+      "doc": "Listing sold date to be displayed to the consumer"
+    }
+  ]
+}

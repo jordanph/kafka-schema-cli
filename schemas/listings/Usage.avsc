@@ -1,0 +1,46 @@
+{
+  "namespace": "listings",
+  "type": "record",
+  "name": "Usage",
+  "fields": [
+    {
+      "name": "id",
+      "type": {
+        "type": "enum",
+        "name": "Usage_id",
+        "symbols": [
+          "mixedfarming",
+          "terrace",
+          "lifestyle",
+          "project_retire",
+          "horticulture",
+          "rural_other",
+          "apartment",
+          "retire",
+          "serviced_apartment",
+          "studio",
+          "house",
+          "unit",
+          "townhouse",
+          "warehouse",
+          "dairy",
+          "alpine",
+          "farmlet",
+          "unitblock",
+          "project_estate",
+          "residential_land",
+          "viticulture",
+          "flat",
+          "livestock",
+          "residential_other",
+          "project_apartment",
+          "duplex_semi_detached",
+          "villa",
+          "acreage",
+          "cropping"
+        ]
+      },
+      "doc": "A usage for the listing, aka Property Type"
+    }
+  ]
+}

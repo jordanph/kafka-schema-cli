@@ -1,0 +1,15 @@
+{
+  "namespace": "listings",
+  "type": "record",
+  "name": "ListingAddressEmbedded",
+  "fields": [
+    {
+      "name": "atlasObject",
+      "type": ["null", {
+        "type": "array",
+        "items": "listings.AtlasObject"
+      }],
+      "doc": "list of REA atlas codes for the location of this process"
+    }
+  ]
+}

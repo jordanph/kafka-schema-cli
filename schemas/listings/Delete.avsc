@@ -1,0 +1,12 @@
+{
+  "namespace": "listings",
+  "type": "record",
+  "name": "Delete",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "doc": "Unique identifier representing a specific listing."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "namespace": "listings",
+  "type": "record",
+  "name": "Embedded",
+  "fields": [
+    {
+      "name": "attachment",
+      "type": ["null", {
+        "type": "array",
+        "items": "listings.Attachment"
+      }],
+      "doc": ""
+    },
+    {
+      "name": "primaryUsage",
+      "type": {
+        "type": "array",
+        "items": "listings.Usage"
+      },
+      "doc": ""
+    },
+    {
+      "name": "listingFeature",
+      "type": {
+        "type": "array",
+        "items": "listings.ListingFeature"
+      },
+      "doc": ""
+    },
+    {
+      "name": "secondaryUsage",
+      "type": {
+        "type": "array",
+        "items": "listings.Usage"
+      },
+      "doc": ""
+    }
+  ]
+}

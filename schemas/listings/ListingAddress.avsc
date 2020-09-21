@@ -1,0 +1,63 @@
+{
+  "namespace": "listings",
+  "type": "record",
+  "name": "ListingAddress",
+  "fields": [
+    {
+      "name": "state",
+      "type": {
+        "type": "enum",
+        "name": "ListingAddress_state",
+        "symbols": [
+          "Vic",
+          "NSW",
+          "SA",
+          "Tas",
+          "Qld",
+          "WA",
+          "ACT",
+          "NT"
+        ]
+      },
+      "doc": "State of the listing address"
+    },
+    {
+      "name": "suburb",
+      "type": "string",
+      "doc": "Suburb of the listing address"
+    },
+    {
+      "name": "display",
+      "type": ["null", "listings.ListingAddressDisplay"]
+    },
+    {
+      "name": "isHidden",
+      "type": "boolean",
+      "doc": "true, if the Agent chooses to hide the listing street address from the consumer."
+    },
+    {
+      "name": "postcode",
+      "type": "string",
+      "doc": "Postcode of the display home address"
+    },
+    {
+      "name": "_embedded",
+      "type": "listings.ListingAddressEmbedded"
+    },
+    {
+      "name": "streetName",
+      "type": ["null", "string"],
+      "doc": "Street name of the listing address"
+    },
+    {
+      "name": "countryCode",
+      "type": "string",
+      "doc": "The country code of the listing"
+    },
+    {
+      "name": "streetNumber",
+      "type": ["null", "string"],
+      "doc": "Street number of the listing address"
+    }
+  ]
+}

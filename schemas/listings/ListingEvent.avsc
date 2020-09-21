@@ -1,0 +1,34 @@
+{
+  "namespace": "listings",
+  "type": "record",
+  "name": "ListingEvent",
+  "fields": [
+    {
+      "name": "eventId",
+      "type": "string",
+      "doc": "Unique ID of the event that created this listing publisher record"
+    },
+    {
+      "name": "operation",
+      "type": ["listings.Listing", "listings.Delete"]
+    },
+    {
+      "name": "processedAt",
+      "type": "string",
+      "doc": "UTC Timestamp when the query is served"
+    },
+    {
+      "name": "documentType",
+      "type": {
+        "type": "enum",
+        "name": "documentTypeEnum",
+        "symbols": [
+          "listing",
+          "project",
+          "delete"
+        ]
+      },
+      "doc": "Document type"
+    }
+  ]
+}

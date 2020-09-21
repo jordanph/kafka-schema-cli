@@ -1,0 +1,169 @@
+{
+  "namespace": "listings",
+  "type": "record",
+  "doc": "The listing information",
+  "name": "Listing",
+  "aliases": [
+    "Put"
+  ],
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "doc": "Unique identifier representing a specific listing."
+    },
+    {
+      "name": "address",
+      "type": [
+        "null",
+        "listings.ListingAddress"
+      ]
+    },
+    {
+      "name": "dateSold",
+      "type": "listings.DateSold"
+    },
+    {
+      "name": "landSize",
+      "type": ["null", "listings.LandSize"]
+    },
+    {
+      "name": "_embedded",
+      "type": "listings.Embedded"
+    },
+    {
+      "name": "audiences",
+      "type": [
+        "null",
+        {
+          "type": "array",
+          "items": {
+            "type": "enum",
+            "name": "audiences",
+            "symbols": [
+              "realestate_dot_com_dot_au",
+              "myfun_dot_com",
+              "realcommercial_dot_com_dot_au",
+              "spacely_dot_com_dot_au",
+              "flatmates_dot_com_dot_au",
+              "studio",
+              "studio_colon_buy"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "soldPrice",
+      "type": "listings.SoldPrice"
+    },
+    {
+      "name": "yearBuilt",
+      "type": ["null", "int"],
+      "doc": "Year in which the listed property was built"
+    },
+    {
+      "name": "dateActive",
+      "type": [
+        "null",
+        "string"
+      ],
+      "doc": "Date active in the format of YYYY-MM-DD"
+    },
+    {
+      "name": "marketFlags",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "enum",
+          "name": "marketFlags",
+          "symbols": [
+            "underOffer",
+            "sold",
+            "underContract",
+            "leased",
+            "leasable",
+            "purchasable",
+            "houseAndLand",
+            "homeAndLand",
+            "project",
+            "projectInactive",
+            "projectExpired",
+            "withdrawnFromSale",
+            "withdrawnFromLease"
+          ]
+        }
+      }
+    },
+    {
+      "name": "numBedrooms",
+      "type": ["null", "int"],
+      "doc": "Number of bedrooms available"
+    },
+    {
+      "name": "buildingSize",
+      "type": ["null", "listings.BuildingSize"]
+    },
+    {
+      "name": "numBathrooms",
+      "type": ["null", "int"],
+      "doc": "Number of bathrooms available"
+    },
+    {
+      "name": "isOnTheMarket",
+      "type": "boolean"
+    },
+    {
+      "name": "isPublishable",
+      "type": "boolean"
+    },
+    {
+      "name": "parkingSpaces",
+      "type": "listings.ParkingSpaces"
+    },
+    {
+      "name": "dateTimeActive",
+      "type": [
+        "null",
+        "string"
+      ],
+      "doc": "An ISO-8601 timestamp (UTC) representing when the listing was published"
+    },
+    {
+      "name": "financialTerms",
+      "type": [
+        "null",
+        "listings.FinancialTerms"
+      ]
+    },
+    {
+      "name": "propertyTypeGroup",
+      "type": ["null", {
+        "type": "enum",
+        "name": "propertyTypeGroup",
+        "symbols": [
+          "land",
+          "house",
+          "unit"
+        ]
+      }],
+      "doc": "Property Type Group: A broad categorisation of property types"
+    },
+    {
+      "name": "listingCategoryGroup",
+      "type": {
+        "type": "enum",
+        "name": "listingCategoryGroup",
+        "symbols": [
+          "Project",
+          "Rental",
+          "Residential",
+          "ResidentialLand",
+          "Rural",
+          "HomeLandPkg"
+        ]
+      },
+      "doc": "A broad categorisation of listing types"
+    }
+  ]
+}

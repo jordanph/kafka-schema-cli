@@ -1,0 +1,42 @@
+{
+  "namespace": "listings",
+  "type": "record",
+  "name": "Geocode",
+  "fields": [
+    {
+      "name": "latitude",
+      "type": [
+        "null",
+        "float"
+      ],
+      "doc": "The geocode latitude for the displayed address"
+    },
+    {
+      "name": "longitude",
+      "type": [
+        "null",
+        "float"
+      ],
+      "doc": "The geocode longitude for the displayed address"
+    },
+    {
+      "name": "reliability",
+      "type": [
+        "null",
+        {
+          "type": "enum",
+          "name": "Geocode_reliability",
+          "symbols": [
+            "property",
+            "street",
+            "suburb",
+            "state",
+            "country",
+            "unknown"
+          ]
+        }
+      ],
+      "doc": "The geocode reliability, based upon AS4590-1999"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "namespace": "listings",
+  "type": "record",
+  "name": "PurchasePrice",
+  "fields": [
+    {
+      "name": "value",
+      "type": "double",
+      "doc": "Purchase price for the listed property"
+    }
+  ]
+}

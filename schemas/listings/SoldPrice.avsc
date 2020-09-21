@@ -1,0 +1,15 @@
+{
+  "namespace": "listings",
+  "type": "record",
+  "name": "SoldPrice",
+  "fields": [
+    {
+      "name": "display",
+      "type": "listings.SoldPriceDisplay"
+    },
+    {
+      "name": "price",
+      "type": ["null", "listings.SoldPricePrice"]
+    }
+  ]
+}
