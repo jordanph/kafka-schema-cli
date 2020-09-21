@@ -8,12 +8,15 @@ mod clients;
 #[tokio::main]
 async fn main() {
   let mut any_errors = false;
+
+  let schema_registry_url = std::env::var("SCHEMA_REGISTRY_URL").unwrap_or("http://localhost:8081".to_string());
  
   let schema_registry_client = SchemaRegistryClient {
-    base_url: "http://localhost:8081"
+    base_url: &schema_registry_url
   };
 
-  println!("🕵️ Validating schema files before migrating...");
+  println!("🕵️  Validating schema files before migrating...");
+  println!("🔧 Schema registry url: {}", schema_registry_url);
   println!("----------------------------------------------");
 
   for entry in WalkDir::new("./schemas")
