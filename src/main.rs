@@ -77,7 +77,7 @@ async fn main() {
                 },
                 Err(err) => {
                     any_errors = true;
-                    println!("❌ Error: {}", err)
+                    println!("❌ Error while reading file {} - {}", f_name, err)
                 }
             }
         }
