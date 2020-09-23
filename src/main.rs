@@ -1,8 +1,10 @@
 use avro_rs::Schema;
 use clients::schema_registry_client::SchemaRegistryClient;
+use clients::kafka_client::KafkaClient;
 use std::fs::read_to_string;
 use walkdir::WalkDir;
 use serde_derive::Deserialize;
+use rdkafka::types::RDKafkaError;
 
 mod clients;
 
@@ -12,9 +14,9 @@ struct Config {
 }
 
 #[derive(Deserialize)]
-struct TopicConfig {
-  replication_factor: i8,
-  partitions: i8,
+pub struct TopicConfig {
+  replication_factor: i32,
+  partitions: i32,
   config: Config
 }
 
@@ -29,7 +31,12 @@ async fn main() {
         base_url: &schema_registry_url,
     };
 
-    println!("🔧 Schema registry url: {}\n", schema_registry_url);
+    let bootstrap_servers = std::env::var("BOOTSTRAP_SERVERS").unwrap_or_else(|_| "localhost:39092".to_string());
+
+    let kafka_client = KafkaClient::new(&bootstrap_servers);
+
+    println!("🔧 Schema registry url: {}", schema_registry_url);
+    println!("🥾 Kafka Bootstrap servers: {}\n", bootstrap_servers);
     println!("🕵️  Validating schema files before migrating...");
     println!("----------------------------------------------");
 
@@ -163,6 +170,17 @@ async fn main() {
                     println!("    - 📋 replication factor: {}", topic_config.replication_factor);
                     println!("    - ✂️  partitions: {}", topic_config.partitions);
                     println!("    - ⏲️  retention (ms): {}", topic_config.config.retention_ms);
+
+                    match kafka_client.create_topic(&topic_name, &topic_config).await {
+                      Ok(err_or_succ) => match err_or_succ {
+                        Ok(_) => println!("  - ✅ deployed topic to broker"),
+                        Err((_, err)) => match err {
+                          RDKafkaError::TopicAlreadyExists => println!("  - ✅ topic already exists, skipping..."),
+                          _ => println!("  - ❌ error while deploying topic to broker - {}", err)
+                        }
+                      },
+                      Err(err) => println!("  - ❌ unexpected error while deploying topic to broker - {}", err)
+                    }
                   },
                   Err(err) => println!("  - ❌ invalid topic config - {}", err)
                 }
