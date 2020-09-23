@@ -1,2 +1,2 @@
-pub mod schema_registry_client;
 pub mod kafka_client;
+pub mod schema_registry_client;
