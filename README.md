@@ -33,7 +33,7 @@ cargo run
 You should see output similar to the following:
 
 ```
-🔧 Schema registry url: https://kafka-schema-registry.eventus-prod.realestate.com.au
+🔧 Schema registry url: http://localhost:8081
 🥾 Kafka Bootstrap servers: localhost:39092
 
 🕵️  Validating schema files before migrating...
@@ -74,6 +74,14 @@ You should see output similar to the following:
 
 🤓 Migrating schemas...
 ----------------------------------------------
-🚧 TBC
+🖊️  Migrating events.property.listings.raw.v1 schemas...
+  - ✅ 🔑 key was migrated!
+  - ✅ 📈 value was migrated!
+🖊️  Migrating events.property.listings.raw.v2 schemas...
+  - ✅ 🔑 key was migrated!
+  - ✅ 📈 value was migrated!
 ----------------------------------------------
+👌 All schemas migrated successfully!
+
+🎉 All topics and schemas were created successfully! 🎉
 ```

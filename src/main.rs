@@ -216,7 +216,99 @@ async fn main() {
 
     println!("🤓 Migrating schemas...");
     println!("----------------------------------------------");
-    println!("🚧 TBC");
+
+    for entry in WalkDir::new("./topics")
+        .follow_links(true)
+        .into_iter()
+        .filter_map(|e| e.ok())
+    {
+        let f_name = entry.file_name().to_string_lossy();
+
+        if f_name.ends_with("config.yaml") {
+            let topic_name = entry
+                .path()
+                .to_string_lossy()
+                .strip_prefix("./topics/")
+                .unwrap()
+                .strip_suffix(&format!("/{}", &f_name.to_string()))
+                .unwrap()
+                .replace("/", ".");
+
+            println!("🖊️  Migrating {} schemas...", topic_name);
+
+            for schema_entry in WalkDir::new(entry.path().parent().unwrap())
+                .follow_links(true)
+                .into_iter()
+                .filter_map(|e| e.ok())
+            {
+                let f_name = schema_entry.file_name().to_string_lossy();
+
+                if f_name.ends_with(".avsc") {
+                    let raw_schema_or_err = read_to_string(schema_entry.path());
+
+                    let key_or_value_schema = f_name.strip_suffix("-schema.avsc").unwrap();
+
+                    let schema_emoji = if key_or_value_schema == "key" {
+                        "🔑"
+                    } else {
+                        "📈"
+                    };
+
+                    match raw_schema_or_err {
+                        Ok(raw_schema) => match Schema::parse_str(&raw_schema) {
+                            Ok(schema) => match &schema {
+                                Schema::Record { .. } => {
+                                    let schema_subject_name =
+                                        format!("{}-{}", &topic_name, &key_or_value_schema);
+
+                                    match schema_registry_client
+                                        .migrate_schema(
+                                            &schema_subject_name,
+                                            &schema.canonical_form(),
+                                        )
+                                        .await
+                                    {
+                                        Ok(()) => println!(
+                                            "  - ✅ {} {} was migrated!",
+                                            schema_emoji, key_or_value_schema
+                                        ),
+                                        Err(error) => {
+                                            any_errors = true;
+                                            println!(
+                                                "  - ❌ Unexpected error migrating {}: {:?}",
+                                                key_or_value_schema, error
+                                            )
+                                        }
+                                    }
+                                }
+                                _ => println!("-  ⚠️ is not a record type. Skipping send..."),
+                            },
+                            Err(err) => {
+                                any_errors = true;
+                                println!("  - ❌ is an invalid AVRO schema file - {}", err)
+                            }
+                        },
+                        Err(err) => {
+                            any_errors = true;
+                            println!("❌ Error while reading file {} - {}", f_name, err)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     println!("----------------------------------------------");
+
+
+    if any_errors {
+        println!("🚨 One or more schemas failed to deploy...");
+        std::process::exit(1)
+    } else {
+        println!("👌 All schemas migrated successfully!\n");
+    }
+
+    println!("🎉 All topics and schemas were created successfully! 🎉");
+
     std::process::exit(0)
 }
