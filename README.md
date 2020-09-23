@@ -4,7 +4,8 @@ Small command line tool written in Rust to deploy topics, and validate and migra
 
 ## Development
 
-You must have `rustup` installed on your machine ([install link](https://www.rust-lang.org/tools/install))
+- You must have `rustup` installed on your machine ([install link](https://www.rust-lang.org/tools/install))
+- You must have `cmake` installed on your machine (`brew install cmake`)
 
 ### Run locally
 
