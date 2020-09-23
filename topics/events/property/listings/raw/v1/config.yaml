@@ -1,0 +1,4 @@
+replication_factor: 3
+partitions: 3
+config:
+  retention_ms: 604800000
