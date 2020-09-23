@@ -1,6 +1,6 @@
 # schema-registry-cli
 
-Small command line tool written in Rust to validate and migrate avro schema files to a deployed [Confluent Schema Registry](https://github.com/confluentinc/schema-registry).
+Small command line tool written in Rust to deploy topics, and validate and migrate avro schema files to a deployed [Confluent Schema Registry](https://github.com/confluentinc/schema-registry).
 
 ## Development
 
@@ -8,13 +8,20 @@ You must have `rustup` installed on your machine ([install link](https://www.rus
 
 ### Run locally
 
-Point the CLI to your schema registry by setting the enviroment variable `SCHEMA_REGISTRY_URL`. For example:
+Point the CLI to your schema registry and brokers by setting the enviroment variables `SCHEMA_REGISTRY_URL` and `BOOTSTRAP_SERVERS`. For example:
 
 ```bash
 export SCHEMA_REGISTRY_URL=https://kafka-schema-registry.eventus-prod.realestate.com.au
+export BOOTSTRAP_SERVERS=localhost:39092
 ```
 
-Place all the schemas that you would like validated in the `schema` folder.
+Place all the topics that you would like to create in the `topics` folder. The topic name is determine by the folder path that each `config.yaml` file resides in.
+
+For example, the path `./topics/events/property/listings/raw/v1` creates a topic called `events.property.listings.raw.v1`.
+
+The schema subjects will be the `topic name + - + schema_name` with the `-schema.avsc` removed from the name.
+
+For example, the path `./topics/events/property/listings/raw/v1` creates a topic called `events.property.listings.raw.v1` and the schema file `key-schema.avcs` will have a subject `events.property.listings.raw.v1-key`. This schema deployment follows the default [TopicNameStrategy provided by the Schema Registry.](https://docs.confluent.io/current/schema-registry/serdes-develop/index.html#overview)
 
 Run the application:
 
@@ -25,69 +32,47 @@ cargo run
 You should see output similar to the following:
 
 ```
-🕵️ Validating schema files before migrating...
-🔧 Schema registry url: http://localhost:8081
+🔧 Schema registry url: https://kafka-schema-registry.eventus-prod.realestate.com.au
+🥾 Kafka Bootstrap servers: localhost:39092
+
+🕵️  Validating schema files before migrating...
 ----------------------------------------------
-⌛ Processing ListingAddressDisplay.avsc AVRO file...
-  - ❌ ListingAddressDisplay.avsc is an invalid AVRO schema file - Unknown primitiive type: listings.Geocode
-⌛ Processing ListingFeature.avsc AVRO file...
-  - ✅ ListingFeature.avsc is a valid AVRO schema file!
-  - ✅ ListingFeature.avsc is a compatible migration!
-⌛ Processing Embedded.avsc AVRO file...
-  - ❌ Embedded.avsc is an invalid AVRO schema file - Unknown primitiive type: listings.Attachment
-⌛ Processing LandSize.avsc AVRO file...
-  - ✅ LandSize.avsc is a valid AVRO schema file!
-  - ✅ LandSize.avsc is a compatible migration!
-⌛ Processing Attachment.avsc AVRO file...
-  - ✅ Attachment.avsc is a valid AVRO schema file!
-  - ✅ Attachment.avsc is a compatible migration!
-⌛ Processing ListingAddressEmbedded.avsc AVRO file...
-  - ❌ ListingAddressEmbedded.avsc is an invalid AVRO schema file - Unknown primitiive type: listings.AtlasObject
-⌛ Processing SoldPriceDisplay.avsc AVRO file...
-  - ✅ SoldPriceDisplay.avsc is a valid AVRO schema file!
-  - ✅ SoldPriceDisplay.avsc is a compatible migration!
-⌛ Processing BuildingSize.avsc AVRO file...
-  - ✅ BuildingSize.avsc is a valid AVRO schema file!
-  - ✅ BuildingSize.avsc is a compatible migration!
-⌛ Processing Delete.avsc AVRO file...
-  - ✅ Delete.avsc is a valid AVRO schema file!
-  - ✅ Delete.avsc is a compatible migration!
-⌛ Processing ListingEvent.avsc AVRO file...
-  - ❌ ListingEvent.avsc is an invalid AVRO schema file - Unknown primitiive type: listings.Listing
-⌛ Processing Usage.avsc AVRO file...
-  - ✅ Usage.avsc is a valid AVRO schema file!
-  - ✅ Usage.avsc is a compatible migration!
-⌛ Processing SoldPricePrice.avsc AVRO file...
-  - ✅ SoldPricePrice.avsc is a valid AVRO schema file!
-  - ✅ SoldPricePrice.avsc is a compatible migration!
-⌛ Processing ListingAddress.avsc AVRO file...
-  - ❌ ListingAddress.avsc is an invalid AVRO schema file - Unknown primitiive type: listings.ListingAddressDisplay
-⌛ Processing SoldPrice.avsc AVRO file...
-  - ❌ SoldPrice.avsc is an invalid AVRO schema file - Unknown primitiive type: listings.SoldPriceDisplay
-⌛ Processing PurchaseDisplay.avsc AVRO file...
-  - ✅ PurchaseDisplay.avsc is a valid AVRO schema file!
-  - ✅ PurchaseDisplay.avsc is a compatible migration!
-⌛ Processing Purchase.avsc AVRO file...
-  - ❌ Purchase.avsc is an invalid AVRO schema file - Unknown primitiive type: listings.PurchasePrice
-⌛ Processing Listing.avsc AVRO file...
-  - ❌ Listing.avsc is an invalid AVRO schema file - Unknown primitiive type: listings.ListingAddress
-⌛ Processing PurchasePrice.avsc AVRO file...
-  - ✅ PurchasePrice.avsc is a valid AVRO schema file!
-  - ✅ PurchasePrice.avsc is a compatible migration!
-⌛ Processing AtlasObject.avsc AVRO file...
-  - ✅ AtlasObject.avsc is a valid AVRO schema file!
-  - ❌ AtlasObject.avsc is a not compatible migration with the existing schema!
-⌛ Processing DateSold.avsc AVRO file...
-  - ✅ DateSold.avsc is a valid AVRO schema file!
-  - ✅ DateSold.avsc is a compatible migration!
-⌛ Processing FinancialTerms.avsc AVRO file...
-  - ❌ FinancialTerms.avsc is an invalid AVRO schema file - Unknown primitiive type: listings.Purchase
-⌛ Processing ParkingSpaces.avsc AVRO file...
-  - ✅ ParkingSpaces.avsc is a valid AVRO schema file!
-  - ✅ ParkingSpaces.avsc is a compatible migration!
-⌛ Processing Geocode.avsc AVRO file...
-  - ✅ Geocode.avsc is a valid AVRO schema file!
-  - ✅ Geocode.avsc is a compatible migration!
+⌛ Processing events.property.listings.raw.v1 topic...
+🔑 key:
+  - ✅ is a valid avro schema!
+  - ✅ is a compatible with current schema!
+📈 value:
+  - ✅ is a valid avro schema!
+  - ✅ is a compatible with current schema!
+⌛ Processing events.property.listings.raw.v2 topic...
+🔑 key:
+  - ✅ is a valid avro schema!
+  - ✅ is a compatible with current schema!
+📈 value:
+  - ✅ is a valid avro schema!
+  - ✅ is a compatible with current schema!
 ----------------------------------------------
-🙅‍♂️ One or more schemas failed validation...
+🙆‍♂️ All schemas passed validation!
+
+🚀 Deploying topics...
+----------------------------------------------
+📚 events.property.listings.raw.v1:
+  - ✅ valid topic config
+    - 📋 replication factor: 1
+    - ✂️  partitions: 3
+    - ⏲️  retention (ms): 604800000
+  - ✅ topic already exists, skipping...
+📚 events.property.listings.raw.v2:
+  - ✅ valid topic config
+    - 📋 replication factor: 1
+    - ✂️  partitions: 1
+    - ⏲️  retention (ms): 604800000
+  - ✅ topic already exists, skipping...
+----------------------------------------------
+🚢 All topics deployed!
+
+🤓 Migrating schemas...
+----------------------------------------------
+🚧 TBC
+----------------------------------------------
 ```
