@@ -1,0 +1,22 @@
+{
+  "namespace": "listings",
+  "type": "record",
+  "name": "AtlasObject",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "doc": "Unique Atlas object id for the display home address of the project"
+    },
+    {
+      "name": "id2",
+      "type": "string",
+      "doc": "Unique Atlas object id for the display home address of the project"
+    },
+    {
+      "name": "subtype",
+      "type": ["null", "string"],
+      "doc": "Type of the Atlas object - one of the possible list of values"
+    }
+  ]
+}
