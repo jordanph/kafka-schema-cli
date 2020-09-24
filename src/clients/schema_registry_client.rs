@@ -12,11 +12,11 @@ struct CompatibilityResponseBody {
     is_compatible: bool,
 }
 
-pub struct SchemaRegistryClient<'a> {
-    pub base_url: &'a str,
+pub struct SchemaRegistryClient {
+    pub base_url: String,
 }
 
-impl<'a> SchemaRegistryClient<'a> {
+impl SchemaRegistryClient {
     pub async fn check_schema_compatibility(
         &self,
         schema_name: &str,

@@ -1,12 +1,14 @@
 use avro_rs::Schema;
 use clients::kafka_client::KafkaClient;
 use clients::schema_registry_client::SchemaRegistryClient;
+use config::AppConfig;
 use rdkafka::types::RDKafkaError;
 use serde_derive::Deserialize;
 use std::fs::read_to_string;
 use walkdir::WalkDir;
 
 mod clients;
+mod config;
 
 #[derive(Deserialize)]
 struct Config {
@@ -24,20 +26,14 @@ pub struct TopicConfig {
 async fn main() {
     let mut any_errors = false;
 
-    let schema_registry_url = std::env::var("SCHEMA_REGISTRY_URL")
-        .unwrap_or_else(|_| "http://localhost:8081".to_string());
+    let app_config = AppConfig::from_env();
 
     let schema_registry_client = SchemaRegistryClient {
-        base_url: &schema_registry_url,
+        base_url: app_config.schema_registry_url,
     };
 
-    let bootstrap_servers =
-        std::env::var("BOOTSTRAP_SERVERS").unwrap_or_else(|_| "localhost:39092".to_string());
+    let kafka_client = KafkaClient::new(app_config.bootstrap_servers);
 
-    let kafka_client = KafkaClient::new(&bootstrap_servers);
-
-    println!("🔧 Schema registry url: {}", schema_registry_url);
-    println!("🥾 Kafka Bootstrap servers: {}\n", bootstrap_servers);
     println!("🕵️  Validating schema files before migrating...");
     println!("----------------------------------------------");
 
@@ -299,7 +295,6 @@ async fn main() {
     }
 
     println!("----------------------------------------------");
-
 
     if any_errors {
         println!("🚨 One or more schemas failed to deploy...");

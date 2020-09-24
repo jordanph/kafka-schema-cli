@@ -8,8 +8,8 @@ pub struct KafkaClient {
 }
 
 impl<'a> KafkaClient {
-    pub fn new(bootstrap_servers: &'a str) -> KafkaClient {
-        let client: AdminClient<_> = consumer_config("create_topic", bootstrap_servers)
+    pub fn new(bootstrap_servers: String) -> KafkaClient {
+        let client: AdminClient<_> = consumer_config("create_topic", &bootstrap_servers)
             .create()
             .unwrap();
 
